@@ -1,7 +1,11 @@
 "use client";
 
-// import { useSettingsStore } from "@/store/useSettingsStore"; // REMOVED to break cycle
-import { AudioLevels } from "@/store/useSettingsStore"; // Type only import is safe
+export interface AudioLevels {
+    master: number;
+    keyboard: number;
+    interface: number;
+    ambient: number;
+}
 
 class ArkanAudioEngine {
     private static instance: ArkanAudioEngine;
