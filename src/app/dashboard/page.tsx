@@ -23,6 +23,8 @@ import { cn } from "@/lib/utils";
 import { ArkanAudio } from "@/lib/audio/ArkanAudio";
 import { useProjectStore } from "@/store/useProjectStore";
 import { useDialogStore } from "@/store/useDialogStore";
+import { useOperationsStore } from "@/store/useOperationsStore";
+import { OperationsModals } from "@/components/dashboard/OperationsModals";
 import { Project } from "@/lib/types";
 
 export default function DashboardPage() {
@@ -43,29 +45,8 @@ export default function DashboardPage() {
   };
 
   const handleInitProject = () => {
-    ArkanAudio.play('system_execute_clack');
-    useDialogStore.getState().openDialog({
-      title: "INITIALIZE_PROJECT_PROTOCOL // ENTER_ID",
-      placeholder: "PROJECT_CODENAME...",
-      confirmLabel: "INITIALIZE_MODULE",
-      onConfirm: async (name) => {
-        if (name && name.trim()) {
-          ArkanAudio.play('system_execute_clack');
-          await useProjectStore.getState().addProject({
-            name: name.toUpperCase(),
-            description: "Initialized via Command Center",
-            technicalId: name.substring(0, 3).toUpperCase() + "-" + Math.floor(Math.random() * 1000),
-            status: "running",
-            progress: 0,
-            tags: [],
-            completedTasks: 0,
-            totalTasks: 0,
-            color: "#f9f906" // Default neon yellow
-          });
-          initialize(); // Refresh grid
-        }
-      }
-    });
+    ArkanAudio.playFast('system_engage');
+    useOperationsStore.getState().openOperations();
   };
 
   const handleDeleteProject = (e: React.MouseEvent, id: string, name: string) => {
@@ -98,17 +79,17 @@ export default function DashboardPage() {
   const selectedProject = projects.find(p => p.id === selectedProjectId);
 
   return (
-    <div className="h-full flex flex-col relative overflow-hidden bg-black text-primary font-mono">
+    <div className="h-full flex flex-col relative overflow-hidden bg-black text-primary font-mono" >
       {/* Background Grid */}
-      <div className="absolute inset-0 pointer-events-none z-0 opacity-10"
+      < div className="absolute inset-0 pointer-events-none z-0 opacity-10"
         style={{
           backgroundImage: `linear-gradient(to right, rgba(249, 249, 6, 0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(249, 249, 6, 0.1) 1px, transparent 1px)`,
           backgroundSize: '40px 40px'
         }}
-      ></div>
+      ></div >
 
       {/* HEADER / STATUS BAR */}
-      <header className="h-12 border-b border-primary/20 bg-[#0a0a05]/80 backdrop-blur-md flex items-center justify-between px-6 z-10 shrink-0">
+      < header className="h-12 border-b border-primary/20 bg-[#0a0a05]/80 backdrop-blur-md flex items-center justify-between px-6 z-10 shrink-0" >
         <div className="flex items-center gap-6 text-[10px] tracking-widest uppercase">
           <div className="flex items-center gap-2 text-primary/60">
             <Database className="h-3 w-3" />
@@ -122,18 +103,20 @@ export default function DashboardPage() {
         </div>
 
         {/* SEARCH BAR (Only visible in GRID view) */}
-        {activeView === 'GRID' && (
-          <div className="flex-1 max-w-md mx-6 relative group">
-            <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-primary/40 group-focus-within:text-primary transition-colors" />
-            <input
-              type="text"
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              placeholder="SEARCH_ACTIVE_OPERATIONS..."
-              className="w-full bg-black/40 border border-primary/10 rounded-sm py-1.5 pl-8 pr-4 text-[10px] text-primary placeholder:text-primary/20 focus:border-primary/50 focus:bg-primary/5 transition-all outline-none uppercase tracking-wider"
-            />
-          </div>
-        )}
+        {
+          activeView === 'GRID' && (
+            <div className="flex-1 max-w-md mx-6 relative group">
+              <Search className="absolute left-3 top-1/2 -translate-y-1/2 h-3 w-3 text-primary/40 group-focus-within:text-primary transition-colors" />
+              <input
+                type="text"
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                placeholder="SEARCH_ACTIVE_OPERATIONS..."
+                className="w-full bg-black/40 border border-primary/10 rounded-sm py-1.5 pl-8 pr-4 text-[10px] text-primary placeholder:text-primary/20 focus:border-primary/50 focus:bg-primary/5 transition-all outline-none uppercase tracking-wider"
+              />
+            </div>
+          )
+        }
 
         <div className="flex items-center gap-4">
           {activeView === 'PROJECT_EXPANDED' && (
@@ -153,18 +136,18 @@ export default function DashboardPage() {
             INIT_PROJECT
           </button>
         </div>
-      </header>
+      </header >
 
       {/* MAIN CONTENT AREA */}
-      <div className="flex-1 flex overflow-hidden z-10">
+      < div className="flex-1 flex overflow-hidden z-10" >
 
         {/* LEFT: GLOBAL INBOX */}
-        <aside className="w-80 border-r border-primary/10 bg-[#0a0a05]/60 backdrop-blur-sm flex flex-col shrink-0">
+        < aside className="w-80 border-r border-primary/10 bg-[#0a0a05]/60 backdrop-blur-sm flex flex-col shrink-0" >
           <GlobalInbox />
-        </aside>
+        </aside >
 
         {/* CENTER: DYNAMIC VIEWPORT */}
-        <main className="flex-1 relative overflow-y-auto custom-scrollbar p-8 bg-black/40">
+        < main className="flex-1 relative overflow-y-auto custom-scrollbar p-8 bg-black/40" >
           <AnimatePresence mode="wait">
             {isLoading ? (
               <motion.div
@@ -272,10 +255,10 @@ export default function DashboardPage() {
               </motion.div>
             )}
           </AnimatePresence>
-        </main>
+        </main >
 
         {/* RIGHT: METRICS & QUICK NOTES */}
-        <aside className="w-72 border-l border-primary/10 bg-[#0a0a05]/80 backdrop-blur-sm p-4 flex flex-col gap-4 shrink-0 pointer-events-auto">
+        < aside className="w-72 border-l border-primary/10 bg-[#0a0a05]/80 backdrop-blur-sm p-4 flex flex-col gap-4 shrink-0 pointer-events-auto" >
           <div className="p-4 border border-primary/20 rounded bg-black/40">
             <h3 className="text-[10px] font-bold text-primary/60 uppercase tracking-widest mb-3 flex items-center gap-2">
               <Activity className="h-3 w-3" />
@@ -309,8 +292,9 @@ export default function DashboardPage() {
               {metrics.sessionStartTime}-{Math.floor(Math.random() * 9999)}
             </div>
           </div>
-        </aside>
-      </div>
-    </div>
+        </aside >
+      </div >
+      <OperationsModals />
+    </div >
   );
 }
