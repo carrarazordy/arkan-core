@@ -47,7 +47,7 @@ export const useDashboardEngine = () => {
                 supabase
                     .from(COLLECTIONS.TASKS)
                     .select('*')
-                    .eq('project_id', 'inbox')
+                    .is('project_id', null)
                     .order('created_at', { ascending: false })
             ]);
 
@@ -57,13 +57,13 @@ export const useDashboardEngine = () => {
             // Transform Projects
             const projects: Project[] = (projectsRes.data || []).map((doc: any) => ({
                 id: doc.id,
-                technicalId: doc.technicalId || 'PROJ-000',
+                technicalId: doc.technical_id || 'PROJ-000',
                 name: doc.name,
                 description: doc.description,
                 status: doc.status as ProjectStatus,
                 progress: doc.progress,
-                totalTasks: doc.totalTasks || 0,
-                completedTasks: doc.completedTasks || 0,
+                totalTasks: doc.total_tasks || 0,
+                completedTasks: doc.completed_tasks || 0,
                 tags: doc.tags || [],
                 color: doc.color_accent,
                 createdAt: doc.created_at,
@@ -111,7 +111,7 @@ export const useDashboardEngine = () => {
             .channel('dashboard-tasks')
             .on(
                 'postgres_changes',
-                { event: '*', schema: 'public', table: COLLECTIONS.TASKS, filter: 'project_id=eq.inbox' },
+                { event: '*', schema: 'public', table: COLLECTIONS.TASKS, filter: 'project_id=is.null' },
                 (payload) => {
                     if (payload.eventType === 'INSERT') {
                         const newRow = payload.new as any;
