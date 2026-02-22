@@ -22,7 +22,9 @@ export const viewport: Viewport = {
 };
 
 import { AudioInitializer } from "@/components/layout/AudioInitializer";
-
+import { AuthGuard } from "@/components/auth/AuthGuard";
+import { AppShell } from "@/components/layout/app-shell";
+import { TechnicalProtocolDialog } from "@/components/ui/technical-protocol-dialog";
 export default function RootLayout({
   children,
 }: {
@@ -32,7 +34,10 @@ export default function RootLayout({
     <html lang="en">
       <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}>
         <AudioInitializer />
-        {children}
+        <AuthGuard>
+          <AppShell>{children}</AppShell>
+        </AuthGuard>
+        <TechnicalProtocolDialog />
       </body>
     </html>
   );
