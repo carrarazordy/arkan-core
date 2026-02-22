@@ -6,6 +6,7 @@ import { Inbox, ChevronRight, CornerDownRight, Plus, Terminal } from "lucide-rea
 import { cn } from "@/lib/utils";
 import { useDialogStore } from "@/store/useDialogStore";
 import { ArkanAudio } from "@/lib/audio/ArkanAudio";
+import Link from 'next/link';
 
 export function GlobalInbox() {
     const { projects } = useProjectStore();
@@ -90,13 +91,22 @@ export function GlobalInbox() {
             </div>
 
             {/* Quick Promotion Logic Hook */}
-            <div className="p-4 border-t border-primary/10 bg-primary/5">
+            <div className="p-4 border-t border-primary/10 bg-primary/5 flex flex-col gap-2">
                 <button
                     onClick={handleCollectEntropy}
-                    className="w-full py-2 bg-primary/10 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all"
+                    className="w-full py-2 bg-primary/10 border border-primary/30 text-primary text-[10px] font-bold uppercase tracking-widest hover:bg-primary hover:text-black transition-all flex items-center justify-center gap-2"
                 >
+                    <Plus className="h-3 w-3" />
                     Collect_Entropy
                 </button>
+                <Link
+                    href="/dashboard/global-archive"
+                    onClick={() => ArkanAudio.playFast('clack')}
+                    className="w-full py-2 bg-transparent border border-primary/30 text-primary/60 text-[10px] font-bold uppercase tracking-widest hover:border-primary hover:text-primary transition-all text-center flex items-center justify-center gap-2"
+                >
+                    <Terminal className="h-3 w-3" />
+                    View_All_Archives
+                </Link>
             </div>
         </div>
     );
