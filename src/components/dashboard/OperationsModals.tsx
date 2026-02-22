@@ -27,6 +27,22 @@ export function OperationsModals() {
         }
     }, [step, parsedName, parsedPriority]);
 
+    // Handle ESC key to go back
+    useEffect(() => {
+        const handleKeyDown = (e: KeyboardEvent) => {
+            if (e.key === 'Escape' && isOpen) {
+                if (step === 'PROTOCOL') {
+                    setStep('INITIALIZE');
+                    ArkanAudio.playFast('clack');
+                } else if (step === 'INITIALIZE') {
+                    handleClose();
+                }
+            }
+        };
+        window.addEventListener('keydown', handleKeyDown);
+        return () => window.removeEventListener('keydown', handleKeyDown);
+    }, [isOpen, step, setStep]);
+
     // Entropy simulation logic
     useEffect(() => {
         if (step === 'ENTROPY') {
@@ -144,11 +160,11 @@ export function OperationsModals() {
                             </div>
 
                             <div className="mt-10 flex gap-4">
-                                <button onClick={handleTransmit} className="flex-1 px-4 py-3 bg-primary text-black font-bold uppercase tracking-widest text-xs hover:shadow-[0_0_15px_rgba(249,249,6,0.6)] transition-all flex items-center justify-center gap-2 group">
+                                <button onClick={handleTransmit} onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')} className="flex-1 px-4 py-3 bg-primary text-black font-bold uppercase tracking-widest text-xs hover:shadow-[0_0_15px_rgba(249,249,6,0.6)] transition-all flex items-center justify-center gap-2 group">
                                     <Zap className="h-4 w-4 fill-black" />
                                     TRANSMIT_DATA
                                 </button>
-                                <button onClick={handleClose} className="flex-1 px-4 py-3 border border-primary/40 text-primary/80 font-bold uppercase tracking-widest text-xs hover:bg-primary/10 hover:text-primary transition-all flex items-center justify-center gap-2 relative">
+                                <button onClick={handleClose} onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')} className="flex-1 px-4 py-3 border border-primary/40 text-primary/80 font-bold uppercase tracking-widest text-xs hover:bg-primary/10 hover:text-primary transition-all flex items-center justify-center gap-2 relative">
                                     <span className="absolute left-2 opacity-50 text-xs">[</span>
                                     ABORT
                                     <span className="absolute right-2 opacity-50 text-xs">]</span>
@@ -239,7 +255,7 @@ export function OperationsModals() {
                                         INITIALIZE_PROJECT_PROTOCOL <span className="text-primary/40 font-light">//</span> DEFINE_PARAMETERS:
                                     </h1>
                                 </div>
-                                <button onClick={handleClose} className="hover:bg-primary hover:text-black border border-primary/40 p-1 transition-colors text-primary">
+                                <button onClick={handleClose} onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')} className="hover:bg-primary hover:text-black border border-primary/40 p-1 transition-colors text-primary">
                                     <X className="h-5 w-5" />
                                 </button>
                             </div>
@@ -263,6 +279,7 @@ export function OperationsModals() {
                                                 <button
                                                     key={p}
                                                     onClick={() => { setFinalPriority(p); ArkanAudio.playFast('clack'); }}
+                                                    onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')}
                                                     className={cn(
                                                         "border text-[11px] py-2 font-bold transition-colors",
                                                         finalPriority === p
@@ -319,10 +336,10 @@ export function OperationsModals() {
                                     Arkan-Source_v0.1 // System_Admin_Access
                                 </div>
                                 <div className="flex gap-4">
-                                    <button onClick={handleClose} className="px-6 py-2 border border-primary/40 text-primary text-[11px] font-bold hover:bg-red-500/10 hover:border-red-500 hover:text-red-500 transition-all uppercase">
-                                        Abort_Session
+                                    <button onClick={() => { ArkanAudio.playFast('clack'); setStep('INITIALIZE'); }} onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')} className="px-6 py-2 border border-primary/40 text-primary/70 text-[11px] font-bold hover:bg-primary/5 hover:border-primary hover:text-primary transition-all uppercase flex items-center gap-2">
+                                        [ BACK ]
                                     </button>
-                                    <button onClick={handleConfirm} className="px-8 py-2 bg-primary text-black text-[11px] font-black hover:shadow-[0_0_20px_rgba(249,249,6,0.5)] transition-all uppercase flex items-center gap-2">
+                                    <button onClick={handleConfirm} onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')} className="px-8 py-2 bg-primary text-black text-[11px] font-black hover:shadow-[0_0_20px_rgba(249,249,6,0.5)] transition-all uppercase flex items-center gap-2">
                                         <span>CONFIRM_INITIALIZATION</span>
                                         <CheckCircle className="h-4 w-4" />
                                     </button>

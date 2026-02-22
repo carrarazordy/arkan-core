@@ -149,13 +149,13 @@ export const useDashboardEngine = () => {
                         const newRow = payload.new as any;
                         const project: Project = {
                             id: newRow.id,
-                            technicalId: newRow.technicalId || 'PROJ-NEW',
+                            technicalId: newRow.technical_id || 'PROJ-NEW',
                             name: newRow.name,
                             description: newRow.description,
                             status: newRow.status as ProjectStatus,
                             progress: newRow.progress,
-                            totalTasks: newRow.totalTasks || 0,
-                            completedTasks: newRow.completedTasks || 0,
+                            totalTasks: newRow.total_tasks || 0,
+                            completedTasks: newRow.completed_tasks || 0,
                             tags: newRow.tags || [],
                             color: newRow.color_accent,
                             createdAt: newRow.created_at,
@@ -165,7 +165,25 @@ export const useDashboardEngine = () => {
                             ...prev,
                             projects: [project, ...prev.projects]
                         }));
-                        ArkanAudio.playFast('system_engage');
+                    } else if (payload.eventType === 'DELETE') {
+                        const oldRow = payload.old as any;
+                        setState(prev => ({
+                            ...prev,
+                            projects: prev.projects.filter(p => p.id !== oldRow.id)
+                        }));
+                    } else if (payload.eventType === 'UPDATE') {
+                        const newRow = payload.new as any;
+                        setState(prev => ({
+                            ...prev,
+                            projects: prev.projects.map(p => p.id === newRow.id ? {
+                                ...p,
+                                name: newRow.name,
+                                progress: newRow.progress,
+                                status: newRow.status,
+                                color: newRow.color_accent,
+                                technicalId: newRow.technical_id || p.technicalId
+                            } : p)
+                        }));
                     }
                 }
             )

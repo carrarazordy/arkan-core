@@ -118,6 +118,7 @@ export default function TacticalContextMenu() {
                     <button
                         key={idx}
                         onClick={() => performAction(item.action)}
+                        onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')}
                         className={cn(
                             "w-full flex items-center justify-between px-3 py-2 hover:bg-primary/20 transition-all group",
                             item.critical ? "hover:bg-red-500/20" : ""

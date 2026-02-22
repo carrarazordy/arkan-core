@@ -198,6 +198,7 @@ export default function DashboardPage() {
                         <div className="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
                           <button
                             onClick={(e) => handleDeleteProject(e, project.id, project.name)}
+                            onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')}
                             className="p-1 hover:bg-red-500/20 text-red-500/40 hover:text-red-500 rounded transition-colors"
                           >
                             <Trash2 className="h-4 w-4" />
@@ -227,6 +228,7 @@ export default function DashboardPage() {
                   {/* Add New Placeholder */}
                   <button
                     onClick={handleInitProject}
+                    onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')}
                     className="border-2 border-dashed border-primary/20 rounded-lg h-48 flex flex-col items-center justify-center gap-4 text-primary/40 hover:text-primary hover:border-primary hover:bg-primary/5 transition-all group"
                   >
                     <div className="w-12 h-12 rounded-full border border-primary/30 flex items-center justify-center group-hover:scale-110 transition-transform">

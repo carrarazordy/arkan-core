@@ -93,6 +93,7 @@ export const TechnicalProtocolDialog = () => {
                     <div className="flex gap-3">
                         <button
                             onClick={handleAbort}
+                            onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')}
                             className="px-4 py-2 border border-primary/40 text-primary text-[10px] font-bold tracking-[0.2em] uppercase hover:bg-primary/10 hover:border-primary transition-all duration-200 font-mono flex items-center gap-1"
                         >
                             <span className="text-primary">[</span>
@@ -101,6 +102,7 @@ export const TechnicalProtocolDialog = () => {
                         </button>
                         <button
                             onClick={handleConfirm}
+                            onMouseEnter={() => ArkanAudio.play('ui_hover_shimmer')}
                             className="px-6 py-2 bg-primary text-black text-[10px] font-bold tracking-[0.2em] uppercase shadow-neon hover:shadow-neon-intense active:scale-95 transition-all duration-200 font-mono flex items-center gap-1"
                         >
                             <span className="text-black/50">[</span>
