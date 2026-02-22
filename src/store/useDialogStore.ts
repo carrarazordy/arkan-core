@@ -5,6 +5,7 @@ interface DialogOptions {
     placeholder?: string;
     initialValue?: string;
     confirmLabel?: string;
+    hideInput?: boolean;
     onConfirm: (value: string) => void | Promise<void>;
     onCancel?: () => void;
 }

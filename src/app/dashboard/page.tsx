@@ -53,17 +53,12 @@ export default function DashboardPage() {
     e.stopPropagation();
     ArkanAudio.playFast('system_engage');
     useDialogStore.getState().openDialog({
-      title: "DE_MANIFEST_PROTOCOL // CONFIRM",
-      placeholder: `TYPE "${name}" TO CONFIRM...`,
+      title: `PURGE PROTOCOL // ${name}`,
       confirmLabel: "PURGE_DATA",
-      onConfirm: async (val) => {
-        if (val === name) {
-          await useProjectStore.getState().deleteProject(id);
-          ArkanAudio.playFast('system_purge');
-        } else {
-          useDialogStore.getState().closeDialog();
-          ArkanAudio.playFast('error');
-        }
+      hideInput: true,
+      onConfirm: async () => {
+        await useProjectStore.getState().deleteProject(id);
+        ArkanAudio.playFast('system_purge');
       }
     });
   };

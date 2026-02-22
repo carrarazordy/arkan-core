@@ -26,7 +26,7 @@ export const TechnicalProtocolDialog = () => {
     if (!isOpen || !options) return null;
 
     const handleConfirm = async () => {
-        if (!inputValue.trim()) return;
+        if (!options.hideInput && !inputValue.trim()) return;
 
         ArkanAudio.play('system_execute_clack');
         // Await potential async operations
@@ -63,22 +63,24 @@ export const TechnicalProtocolDialog = () => {
                 </div>
 
                 {/* Input Field */}
-                <div className="relative group">
-                    <input
-                        ref={inputRef}
-                        type="text"
-                        value={inputValue}
-                        placeholder={options.placeholder || "_WAITING_FOR_INPUT"}
-                        onChange={(e) => setInputValue(e.target.value)}
-                        onKeyDown={(e) => {
-                            if (e.key === 'Enter') handleConfirm();
-                            if (e.key === 'Escape') handleAbort();
-                        }}
-                        className="w-full bg-black border border-primary/40 text-primary p-3 outline-none transition-all duration-200 focus:border-primary focus:ring-0 focus:shadow-neon-intense placeholder:text-primary/20 text-sm tracking-widest font-mono uppercase"
-                        autoComplete="off"
-                    />
-                    <div className="absolute -right-2 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-primary animate-pulse"></div>
-                </div>
+                {!options.hideInput && (
+                    <div className="relative group">
+                        <input
+                            ref={inputRef}
+                            type="text"
+                            value={inputValue}
+                            placeholder={options.placeholder || "_WAITING_FOR_INPUT"}
+                            onChange={(e) => setInputValue(e.target.value)}
+                            onKeyDown={(e) => {
+                                if (e.key === 'Enter') handleConfirm();
+                                if (e.key === 'Escape') handleAbort();
+                            }}
+                            className="w-full bg-black border border-primary/40 text-primary p-3 outline-none transition-all duration-200 focus:border-primary focus:ring-0 focus:shadow-neon-intense placeholder:text-primary/20 text-sm tracking-widest font-mono uppercase"
+                            autoComplete="off"
+                        />
+                        <div className="absolute -right-2 top-1/2 -translate-y-1/2 h-4 w-[2px] bg-primary animate-pulse"></div>
+                    </div>
+                )}
 
                 {/* Footer Actions */}
                 <div className="flex justify-between items-end">

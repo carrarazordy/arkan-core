@@ -81,17 +81,12 @@ export default function TacticalContextMenu() {
 
         if (action === "DELETE" && contextTarget?.type === "PROJECT") {
             useDialogStore.getState().openDialog({
-                title: "DE_MANIFEST_PROTOCOL // CONFIRM",
-                placeholder: `TYPE "${contextTarget.name}" TO CONFIRM...`,
+                title: `PURGE PROTOCOL // ${contextTarget.name}`,
                 confirmLabel: "PURGE_DATA",
-                onConfirm: async (val) => {
-                    if (val === contextTarget.name) {
-                        await useProjectStore.getState().deleteProject(contextTarget.id);
-                        ArkanAudio.playFast('system_purge');
-                    } else {
-                        useDialogStore.getState().closeDialog();
-                        ArkanAudio.playFast('error');
-                    }
+                hideInput: true,
+                onConfirm: async () => {
+                    await useProjectStore.getState().deleteProject(contextTarget.id);
+                    ArkanAudio.playFast('system_purge');
                 }
             });
         }
