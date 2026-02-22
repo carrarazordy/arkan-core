@@ -35,13 +35,13 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 
             const projects: Project[] = (data || []).map((doc: any) => ({
                 id: doc.id,
-                technicalId: doc.technicalId || 'PROJ-000', // Default if missing
+                technicalId: doc.technical_id || 'PROJ-000', // Default if missing
                 name: doc.name,
                 description: doc.description,
                 status: doc.status as ProjectStatus,
                 progress: doc.progress,
-                totalTasks: doc.totalTasks || 0,
-                completedTasks: doc.completedTasks || 0,
+                totalTasks: doc.total_tasks || 0,
+                completedTasks: doc.completed_tasks || 0,
                 tags: doc.tags || [],
                 color: doc.color_accent, // Mapped from color_accent
             }));
@@ -63,9 +63,9 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
                     description: project.description,
                     status: project.status,
                     progress: project.progress,
-                    color_accent: project.color, // Mapped to color_accent
-                    // technicalId, totalTasks, completedTasks should be handled by DB defaults or triggers if possible, 
-                    // or passed if collected from UI
+                    color_accent: project.color,
+                    technical_id: project.technicalId,
+                    user_id: (await supabase.auth.getUser()).data.user?.id
                 })
                 .select()
                 .single();
@@ -74,13 +74,13 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
 
             const newProject: Project = {
                 id: data.id,
-                technicalId: data.technicalId || 'PROJ-NEW',
+                technicalId: data.technical_id || 'PROJ-NEW',
                 name: data.name,
                 description: data.description,
                 status: data.status as ProjectStatus,
                 progress: data.progress,
-                totalTasks: data.totalTasks || 0,
-                completedTasks: data.completedTasks || 0,
+                totalTasks: data.total_tasks || 0,
+                completedTasks: data.completed_tasks || 0,
                 tags: data.tags || [],
                 color: data.color_accent,
             };
@@ -100,6 +100,18 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
             if (updates.color) {
                 payload.color_accent = updates.color;
                 delete payload.color;
+            }
+            if (updates.technicalId) {
+                payload.technical_id = updates.technicalId;
+                delete payload.technicalId;
+            }
+            if (typeof updates.completedTasks !== 'undefined') {
+                payload.completed_tasks = updates.completedTasks;
+                delete payload.completedTasks;
+            }
+            if (typeof updates.totalTasks !== 'undefined') {
+                payload.total_tasks = updates.totalTasks;
+                delete payload.totalTasks;
             }
 
             const { error } = await supabase
