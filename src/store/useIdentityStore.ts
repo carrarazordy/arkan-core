@@ -92,7 +92,7 @@ export const useIdentityStore = create<IdentityState>((set, get) => ({
     logout: async () => {
         try {
             await supabase.auth.signOut();
-            ArkanAudio.playFast('system_purge');
+            ArkanAudio.playFast('clack');
             set({ user: null, isAuthenticated: false, sessions: [] });
             useSystemLogStore.getState().addLog("SESSION_TERMINATED: USER_LOGOUT", 'system');
 

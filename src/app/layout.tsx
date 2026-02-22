@@ -21,6 +21,8 @@ export const viewport: Viewport = {
   themeColor: "#ffff00",
 };
 
+import { AudioInitializer } from "@/components/layout/AudioInitializer";
+
 export default function RootLayout({
   children,
 }: {
@@ -29,6 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${spaceGrotesk.variable} ${jetbrainsMono.variable} antialiased`}>
+        <AudioInitializer />
         {children}
       </body>
     </html>
