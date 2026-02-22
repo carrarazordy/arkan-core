@@ -31,7 +31,7 @@ export default function GlobalArchivePage() {
 
     const handleBack = () => {
         ArkanAudio.playFast('shimmer');
-        router.push('/dashboard');
+        router.back();
     };
 
     return (
