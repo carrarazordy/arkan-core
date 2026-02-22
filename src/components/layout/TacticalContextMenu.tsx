@@ -14,6 +14,8 @@ import {
     ExternalLink
 } from "lucide-react";
 import { ArkanAudio } from "@/lib/audio/ArkanAudio";
+import { useDialogStore } from "@/store/useDialogStore";
+import { useProjectStore } from "@/store/useProjectStore";
 
 interface ContextMenuItem {
     label: string;
@@ -25,6 +27,7 @@ interface ContextMenuItem {
 export default function TacticalContextMenu() {
     const [isVisible, setIsVisible] = useState(false);
     const [position, setPosition] = useState({ x: 0, y: 0 });
+    const [contextTarget, setContextTarget] = useState<{ id: string, type: string, name: string } | null>(null);
 
     const handleContextMenu = useCallback((e: MouseEvent) => {
         // Prevent for input elements to keep default text handling
@@ -32,6 +35,18 @@ export default function TacticalContextMenu() {
         if (target.tagName === 'INPUT' || target.tagName === 'TEXTAREA') return;
 
         e.preventDefault();
+
+        const contextEl = target.closest('[data-context-target]');
+        if (contextEl) {
+            setContextTarget({
+                id: contextEl.getAttribute('data-context-target') || '',
+                type: contextEl.getAttribute('data-context-type') || '',
+                name: contextEl.getAttribute('data-context-name') || ''
+            });
+        } else {
+            setContextTarget(null);
+        }
+
         setPosition({ x: e.clientX, y: e.clientY });
         setIsVisible(true);
         ArkanAudio.playFast('system_engage');
@@ -59,6 +74,33 @@ export default function TacticalContextMenu() {
         { label: "DE_MANIFEST", icon: Trash2, action: "DELETE", critical: true },
     ];
 
+    const performAction = (action: string) => {
+        ArkanAudio.playFast('confirm');
+        setIsVisible(false);
+        console.log(`>> ACTION: ${action}`);
+
+        if (action === "DELETE" && contextTarget?.type === "PROJECT") {
+            useDialogStore.getState().openDialog({
+                title: "DE_MANIFEST_PROTOCOL // CONFIRM",
+                placeholder: `TYPE "${contextTarget.name}" TO CONFIRM...`,
+                confirmLabel: "PURGE_DATA",
+                onConfirm: async (val) => {
+                    if (val === contextTarget.name) {
+                        await useProjectStore.getState().deleteProject(contextTarget.id);
+                        ArkanAudio.playFast('system_purge');
+                    } else {
+                        useDialogStore.getState().closeDialog();
+                        ArkanAudio.playFast('error');
+                    }
+                }
+            });
+        }
+        else if (action === "COPY" && contextTarget) {
+            navigator.clipboard.writeText(contextTarget.id);
+            ArkanAudio.playFast('clack');
+        }
+    };
+
     if (!isVisible) return null;
 
     return (
@@ -75,11 +117,7 @@ export default function TacticalContextMenu() {
                 {items.map((item, idx) => (
                     <button
                         key={idx}
-                        onClick={() => {
-                            ArkanAudio.playFast('confirm');
-                            console.log(`>> ACTION: ${item.action}`);
-                            setIsVisible(false);
-                        }}
+                        onClick={() => performAction(item.action)}
                         className={cn(
                             "w-full flex items-center justify-between px-3 py-2 hover:bg-primary/20 transition-all group",
                             item.critical ? "hover:bg-red-500/20" : ""

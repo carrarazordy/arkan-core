@@ -217,32 +217,13 @@ export function NoteEditor() {
                     {/* Raw Input Layer (Invisible Textarea for interaction) */}
                     <textarea
                         ref={textareaRef}
-                        className="flex-1 w-full max-w-4xl mx-auto resize-none bg-transparent p-8 pt-10 focus:outline-none text-transparent caret-transparent leading-relaxed font-mono z-10 selection:bg-primary/20"
+                        className="flex-1 w-full max-w-4xl mx-auto resize-none bg-transparent p-8 pt-10 focus:outline-none text-transparent caret-primary leading-relaxed font-mono z-10 selection:bg-primary/20"
                         placeholder="INITIALIZE_NEURAL_PATHWAY..."
                         value={buffer}
                         onChange={handleInput}
                         onKeyDown={handleKeyDown}
                         spellCheck={false}
                     />
-
-                    {/* Arkan Pulsed Block Cursor Implementation */}
-                    <style jsx>{`
-                        textarea {
-                            caret-color: transparent;
-                        }
-                        .arkan-cursor {
-                            display: inline-block;
-                            width: 8px;
-                            height: 16px;
-                            background: var(--color-primary);
-                            animation: arkan-blink 1s steps(2, start) infinite;
-                            vertical-align: middle;
-                            margin-left: 2px;
-                        }
-                        @keyframes arkan-blink {
-                            to { visibility: hidden; }
-                        }
-                    `}</style>
                 </div>
 
                 {/* TIMER MODE (Arkan Chronos) */}

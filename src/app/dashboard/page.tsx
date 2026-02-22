@@ -12,7 +12,8 @@ import {
   Plus,
   ArrowLeft,
   Zap,
-  Clock
+  Clock,
+  Trash2
 } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useDashboardEngine } from "@/hooks/useDashboardEngine";
@@ -62,6 +63,25 @@ export default function DashboardPage() {
             color: "#f9f906" // Default neon yellow
           });
           initialize(); // Refresh grid
+        }
+      }
+    });
+  };
+
+  const handleDeleteProject = (e: React.MouseEvent, id: string, name: string) => {
+    e.stopPropagation();
+    ArkanAudio.playFast('system_engage');
+    useDialogStore.getState().openDialog({
+      title: "DE_MANIFEST_PROTOCOL // CONFIRM",
+      placeholder: `TYPE "${name}" TO CONFIRM...`,
+      confirmLabel: "PURGE_DATA",
+      onConfirm: async (val) => {
+        if (val === name) {
+          await useProjectStore.getState().deleteProject(id);
+          ArkanAudio.playFast('system_purge');
+        } else {
+          useDialogStore.getState().closeDialog();
+          ArkanAudio.playFast('error');
         }
       }
     });
@@ -183,10 +203,25 @@ export default function DashboardPage() {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 xl:grid-cols-3 gap-6">
                   {filteredProjects.map(project => (
-                    <div key={project.id} onClick={() => expandProject(project.id)} className="cursor-pointer group">
+                    <div
+                      key={project.id}
+                      onClick={() => expandProject(project.id)}
+                      className="cursor-pointer group"
+                      data-context-target={project.id}
+                      data-context-type="PROJECT"
+                      data-context-name={project.name}
+                    >
                       <div className="bg-[#11110b] border border-primary/20 p-6 rounded-lg hover:border-primary hover:bg-primary/5 transition-all group-hover:shadow-[0_0_20px_rgba(249,249,6,0.1)] relative overflow-hidden h-48 flex flex-col justify-between">
-                        <div className="absolute top-0 right-0 p-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <Zap className="h-4 w-4 text-primary" />
+                        <div className="absolute top-0 right-0 p-2 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity z-20">
+                          <button
+                            onClick={(e) => handleDeleteProject(e, project.id, project.name)}
+                            className="p-1 hover:bg-red-500/20 text-red-500/40 hover:text-red-500 rounded transition-colors"
+                          >
+                            <Trash2 className="h-4 w-4" />
+                          </button>
+                          <div className="p-1 text-primary/80">
+                            <Zap className="h-4 w-4" />
+                          </div>
                         </div>
                         <div>
                           <div className="text-[10px] font-mono text-primary/50 mb-1">{project.technicalId}</div>
