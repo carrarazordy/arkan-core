@@ -137,9 +137,13 @@ class ArkanAudioEngine {
         // Ideally should assume playFast handles others.
         // Recovering other sounds:
         else if (type === 'clack') {
-            oscillator.type = 'square'; oscillator.frequency.setValueAtTime(200, now);
-            gainNode.gain.setValueAtTime(0.1 * volume, now); gainNode.gain.exponentialRampToValueAtTime(0.01 * volume, now + 0.1);
-            oscillator.start(now); oscillator.stop(now + 0.1);
+            oscillator.type = 'triangle';
+            oscillator.frequency.setValueAtTime(300, now);
+            oscillator.frequency.exponentialRampToValueAtTime(100, now + 0.05);
+            gainNode.gain.setValueAtTime(0.08 * volume, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.001 * volume, now + 0.05);
+            oscillator.start(now);
+            oscillator.stop(now + 0.05);
         } else if (type === 'confirm') {
             oscillator.type = 'sine'; oscillator.frequency.setValueAtTime(440, now); oscillator.frequency.setValueAtTime(880, now + 0.1);
             gainNode.gain.setValueAtTime(0.1 * volume, now); gainNode.gain.exponentialRampToValueAtTime(0.01 * volume, now + 0.2);
@@ -180,13 +184,13 @@ class ArkanAudioEngine {
             gainNode.gain.setValueAtTime(0.3 * volume, now); gainNode.gain.exponentialRampToValueAtTime(0.01 * volume, now + 0.6);
             oscillator.start(now); oscillator.stop(now + 0.6);
         } else if (type === 'system_purge') {
-            oscillator.type = 'square';
-            oscillator.frequency.setValueAtTime(200, this.audioContext.currentTime);
-            oscillator.frequency.exponentialRampToValueAtTime(40, this.audioContext.currentTime + 1);
-            gainNode.gain.setValueAtTime(0.2 * volume, this.audioContext.currentTime);
-            gainNode.gain.linearRampToValueAtTime(0, this.audioContext.currentTime + 1);
-            oscillator.start();
-            oscillator.stop(this.audioContext.currentTime + 1);
+            oscillator.type = 'sawtooth';
+            oscillator.frequency.setValueAtTime(150, now);
+            oscillator.frequency.exponentialRampToValueAtTime(20, now + 0.3);
+            gainNode.gain.setValueAtTime(0.15 * volume, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.001 * volume, now + 0.3);
+            oscillator.start(now);
+            oscillator.stop(now + 0.3);
         } else if (type === 'digital_handshake') {
             const now = this.audioContext.currentTime;
             [2000, 3000, 4000].forEach((freq, i) => {
