@@ -150,6 +150,15 @@ class ArkanAudioEngine {
             gainNode.gain.setValueAtTime(0.05 * volume, now); gainNode.gain.exponentialRampToValueAtTime(0.01 * volume, now + 0.3);
             oscillator.start(now); oscillator.stop(now + 0.3);
         }
+        else if (type === 'ui_hover_shimmer') {
+            oscillator.type = 'sine';
+            oscillator.frequency.setValueAtTime(2800, now);
+            oscillator.frequency.exponentialRampToValueAtTime(3200, now + 0.05);
+            gainNode.gain.setValueAtTime(0.02 * volume, now);
+            gainNode.gain.exponentialRampToValueAtTime(0.001 * volume, now + 0.05);
+            oscillator.start(now);
+            oscillator.stop(now + 0.05);
+        }
         else if (type === 'alert_sequence_high') {
             // ... existing alert logic
             for (let i = 0; i < 3; i++) {
