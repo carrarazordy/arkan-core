@@ -3,6 +3,7 @@ import { supabase, COLLECTIONS } from '@/lib/supabase';
 import { Project, Task, ProjectStatus } from '@/lib/types';
 import { ArkanAudio } from '@/lib/audio/ArkanAudio';
 import { useThemeStore } from '@/store/useTheme';
+import { useProjectStore } from '@/store/useProjectStore';
 
 export type DashboardView = 'GRID' | 'PROJECT_EXPANDED';
 
@@ -195,8 +196,8 @@ export const useDashboardEngine = () => {
         };
     }, []);
 
-    // 3. Drill-down Module Logic
     const expandProject = (projectId: string) => {
+        useProjectStore.getState().setSelectedProjectId(projectId);
         setState(prev => ({
             ...prev,
             activeView: 'PROJECT_EXPANDED',
@@ -207,6 +208,7 @@ export const useDashboardEngine = () => {
     };
 
     const returnToGrid = () => {
+        useProjectStore.getState().setSelectedProjectId(null);
         setState(prev => ({
             ...prev,
             activeView: 'GRID',

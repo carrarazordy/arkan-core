@@ -97,11 +97,11 @@ export const useProjectStore = create<ProjectState>((set, get) => ({
         set({ isLoading: true, error: null });
         try {
             const payload: any = { ...updates };
-            if (updates.color) {
+            if (updates.color !== undefined) {
                 payload.color_accent = updates.color;
                 delete payload.color;
             }
-            if (updates.technicalId) {
+            if (updates.technicalId !== undefined) {
                 payload.technical_id = updates.technicalId;
                 delete payload.technicalId;
             }

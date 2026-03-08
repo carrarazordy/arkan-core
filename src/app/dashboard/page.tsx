@@ -245,6 +245,7 @@ export default function DashboardPage() {
                 {selectedProject ? (
                   <ProjectDrillDown
                     project={selectedProject}
+                    onBack={returnToGrid}
                   />
                 ) : (
                   <div className="text-center text-red-500">MODULE_LOAD_ERROR</div>

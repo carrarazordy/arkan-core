@@ -124,11 +124,11 @@ export const useTaskStore = create<TaskState>((set, get) => ({
         try {
             const payload: any = { ...updates };
             // Map camelCase to snake_case for specific fields
-            if (updates.projectId) {
+            if (updates.projectId !== undefined) {
                 payload.project_id = updates.projectId;
                 delete payload.projectId;
             }
-            if (updates.dueDate) {
+            if (updates.dueDate !== undefined) {
                 payload.due_date = updates.dueDate instanceof Date ? updates.dueDate.toISOString() : updates.dueDate;
                 delete payload.dueDate;
             }

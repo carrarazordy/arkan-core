@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html class="dark" lang="en"><head>
+<meta charset="utf-8"/>
+<meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+<title>Arkan Core Specification | PROJECT_OPERATIONS</title>
+<script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+<link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&amp;display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+<script id="tailwind-config">
+        tailwind.config = {
+            darkMode: "class",
+            theme: {
+                extend: {
+                    colors: {
+                        "primary": "#f9f906",
+                        "background-dark": "#000000",
+                        "surface": "#0a0a0a",
+                        "accent-dim": "rgba(249, 249, 6, 0.05)",
+                        "accent-mid": "rgba(249, 249, 6, 0.15)",
+                    },
+                    fontFamily: {
+                        "mono": ["Space Mono", "monospace"]
+                    },
+                },
+            },
+        }
+    </script>
+<style type="text/tailwindcss">
+        @layer base {
+            body {
+                @apply bg-background-dark text-primary font-mono selection:bg-primary selection:text-black;
+                background-image: 
+                    linear-gradient(rgba(249, 249, 6, 0.03) 1px, transparent 1px),
+                    linear-gradient(90deg, rgba(249, 249, 6, 0.03) 1px, transparent 1px);
+                background-size: 40px 40px;
+            }
+        }
+        .scanline {
+            width: 100%;
+            height: 100px;
+            z-index: 100;
+            background: linear-gradient(0deg, transparent 0%, rgba(249, 249, 6, 0.05) 50%, transparent 100%);
+            opacity: 0.1;
+            position: fixed;
+            pointer-events: none;
+            animation: scan 8s linear infinite;
+        }
+        @keyframes scan {
+            from { top: -100px; }
+            to { top: 100%; }
+        }
+        .custom-scrollbar::-webkit-scrollbar {
+            width: 2px;
+        }
+        .custom-scrollbar::-webkit-scrollbar-track {
+            background: #000000;
+        }
+        .custom-scrollbar::-webkit-scrollbar-thumb {
+            background: #f9f906;
+        }
+        .tech-border {
+            border: 1px solid rgba(249, 249, 6, 0.2);
+            position: relative;
+        }
+        .tech-border::after {
+            content: '';
+            position: absolute;
+            top: -1px;
+            left: -1px;
+            width: 4px;
+            height: 4px;
+            background: #f9f906;
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col overflow-hidden uppercase">
+<div class="scanline"></div>
+<header class="border-b border-primary/30 bg-black/90 backdrop-blur-sm z-40 px-6 py-4">
+<div class="flex items-center justify-between mb-3">
+<div class="flex items-center space-x-6">
+<div class="w-12 h-12 border-2 border-primary flex items-center justify-center bg-primary/10">
+<span class="material-symbols-outlined text-primary text-3xl">terminal</span>
+</div>
+<div>
+<h1 class="text-2xl font-bold tracking-[0.2em] flex items-center">
+                        PROJECT_OPERATIONS <span class="mx-3 opacity-40">//</span> <span class="text-white">ARKAN_CORE_V4</span>
+</h1>
+<div class="flex space-x-4 text-[10px] mt-1 tracking-widest">
+<span class="flex items-center"><span class="w-1.5 h-1.5 bg-primary rounded-full mr-2 animate-pulse"></span> STATUS: SYSTEM_OPERATIONAL</span>
+<span class="opacity-40">|</span>
+<span>AUTH: ADMIN</span>
+</div>
+</div>
+</div>
+<div class="flex items-center space-x-8 text-[11px]">
+<div class="flex flex-col items-end">
+<span class="text-primary/40 text-[9px]">UPTIME_METRIC</span>
+<span class="font-bold">142:32:04:18</span>
+</div>
+<div class="flex flex-col items-end">
+<span class="text-primary/40 text-[9px]">SECURITY_LEVEL</span>
+<span class="text-primary font-bold bg-primary/10 px-2">OMEGA</span>
+</div>
+</div>
+</div>
+<div class="w-full h-1 bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary shadow-[0_0_15px_#f9f906]" style="width: 68%;"></div>
+</div>
+</header>
+<main class="flex-1 flex overflow-hidden p-3 gap-3">
+<aside class="w-72 flex flex-col gap-3">
+<div class="flex-1 tech-border bg-black flex flex-col overflow-hidden">
+<div class="p-2 border-b border-primary/20 bg-primary/5 flex items-center justify-between">
+<span class="text-[11px] font-bold tracking-widest">FILE_SYSTEM</span>
+<span class="material-symbols-outlined text-sm">folder_managed</span>
+</div>
+<div class="flex-1 p-3 overflow-y-auto custom-scrollbar text-[10px] space-y-2">
+<div class="space-y-1">
+<div class="flex items-center space-x-2 text-primary">
+<span class="material-symbols-outlined text-xs">keyboard_arrow_down</span>
+<span class="material-symbols-outlined text-sm">folder</span>
+<span class="font-bold">ROOT_DOCS</span>
+</div>
+<div class="pl-6 space-y-1.5 border-l border-primary/10 ml-1.5">
+<div class="flex items-center space-x-2 text-primary/70 hover:text-primary cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-xs opacity-50 group-hover:opacity-100">description</span>
+<span>sys_specs.md</span>
+</div>
+<div class="flex items-center space-x-2 text-primary/70 hover:text-primary cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-xs opacity-50 group-hover:opacity-100">code_blocks</span>
+<span>api_endpoints.json</span>
+</div>
+<div class="flex items-center space-x-2 text-primary/70 hover:text-primary cursor-pointer transition-colors group">
+<span class="material-symbols-outlined text-xs opacity-50 group-hover:opacity-100">data_object</span>
+<span>config_map.json</span>
+</div>
+</div>
+</div>
+<div class="flex items-center space-x-2 text-primary/60 hover:text-primary cursor-pointer py-1">
+<span class="material-symbols-outlined text-xs">keyboard_arrow_right</span>
+<span class="material-symbols-outlined text-sm">lock</span>
+<span class="font-bold">ENCRYPTED_ASSETS</span>
+</div>
+<div class="flex items-center space-x-2 text-primary/60 hover:text-primary cursor-pointer py-1">
+<span class="material-symbols-outlined text-xs">keyboard_arrow_right</span>
+<span class="material-symbols-outlined text-sm">history_edu</span>
+<span class="font-bold">LEGACY_NOTES</span>
+</div>
+</div>
+<div class="p-3 bg-primary/5 border-t border-primary/20">
+<div class="flex justify-between text-[9px] mb-1.5 tracking-tighter">
+<span>STORAGE_USED</span>
+<span>42.8 GB / 100 GB</span>
+</div>
+<div class="h-1 bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary/60" style="width: 42.8%;"></div>
+</div>
+</div>
+</div>
+<div class="h-44 tech-border bg-black p-3 flex flex-col">
+<span class="text-[10px] font-bold tracking-widest mb-3">LINKED_SIGNALS</span>
+<div class="flex-1 relative border border-primary/10 overflow-hidden rounded-sm group">
+<img alt="signals" class="w-full h-full object-cover opacity-20 group-hover:opacity-40 transition-opacity duration-700" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCsR7Ys873HkraDoIu1Jn8owA3DGSim__-qL1kcwbuT5nPaieU7clMrSF4viimk0u39k5yiMLfT4eiCQqRAOh1zxvK4ziICiZ9yDAb8cEYH0sO0MMf3d59hEK4jzOw6qRLsUpe2bju29ecMYVFcCzCbgaowaFDdKArcO5lHlzQXO9ORwrMfE3-epHIzhq2rPFpNpSM2MhN1oGgcLgDL-rLx8lXBXnfsGQVV-PSaKXwI525k2u7mhC4SukFRqm4N7GxLttJuS-DIJec"/>
+<div class="absolute inset-0 p-2 flex flex-col justify-between">
+<div class="flex justify-between text-[9px]">
+<span class="opacity-50">NODE_LATENCY</span>
+<span class="text-primary">12MS</span>
+</div>
+<div class="text-[9px] flex items-center text-green-400">
+<span class="w-1.5 h-1.5 bg-green-400 rounded-full mr-1"></span>
+                            SIGNAL_STABLE
+                        </div>
+</div>
+</div>
+</div>
+</aside>
+<section class="flex-1 flex flex-col tech-border bg-black overflow-hidden">
+<div class="p-3 border-b border-primary/20 flex items-center justify-between bg-primary/5">
+<div class="flex items-center space-x-3">
+<span class="material-symbols-outlined text-sm">view_timeline</span>
+<h2 class="text-xs font-bold tracking-widest">ACTIVE_TASK_STREAM</h2>
+</div>
+<div class="flex space-x-2">
+<button class="px-3 py-1 border border-primary/30 text-[9px] font-bold hover:bg-primary/20 transition-all">NEW_SEQUENCE</button>
+<button class="px-3 py-1 bg-primary text-black text-[9px] font-bold hover:bg-white transition-all">FORCE_SYNC</button>
+</div>
+</div>
+<div class="flex-1 overflow-y-auto p-3 custom-scrollbar space-y-3">
+<div class="p-4 bg-primary/5 border border-primary/10 hover:border-primary/40 transition-colors relative overflow-hidden group">
+<div class="absolute top-0 right-0 p-1 text-[8px] opacity-20 group-hover:opacity-100 transition-opacity">TK-9902</div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-[9px] text-primary border border-primary/50 px-2 py-0.5 bg-primary/10">[IN_PROGRESS]</span>
+</div>
+<h3 class="text-sm font-bold text-white mb-2">DECRYPT NEURAL LINK HANDSHAKE PROTOCOLS</h3>
+<p class="text-[10px] text-primary/60 leading-relaxed mb-4">ANALYZING HANDSHAKE SEQUENCE BETWEEN SECONDARY NODE AND CENTRAL HUB. 40% VERIFICATION COMPLETE.</p>
+<div class="flex justify-between items-center pt-2 border-t border-primary/5">
+<div class="flex space-x-1">
+<span class="w-5 h-5 flex items-center justify-center border border-primary/30 text-[8px] bg-black">A1</span>
+<span class="w-5 h-5 flex items-center justify-center border border-primary/30 text-[8px] bg-black">A2</span>
+</div>
+<span class="text-[10px] font-bold text-primary/40">EST: 04:30:00</span>
+</div>
+</div>
+<div class="p-4 border border-primary/10 hover:border-primary/40 transition-colors relative group">
+<div class="absolute top-0 right-0 p-1 text-[8px] opacity-20">TK-9905</div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-[9px] text-white/40 border border-white/20 px-2 py-0.5">[READY]</span>
+</div>
+<h3 class="text-sm font-bold text-white/80 mb-2">OPTIMIZE DATABASE INDEXING FOR PROJECT LOGS</h3>
+<p class="text-[10px] text-primary/40 leading-relaxed mb-4">QUEUED FOR BACKGROUND EXECUTION DURING LOW-ACTIVITY CYCLE. PARSING TABLE INDEXES.</p>
+<div class="flex justify-between items-center pt-2 border-t border-primary/5">
+<div class="w-5 h-5 flex items-center justify-center border border-white/10 text-[8px] opacity-50">DB</div>
+<span class="text-[10px] font-bold text-primary/20">EST: 01:15:00</span>
+</div>
+</div>
+<div class="p-4 border border-red-500/20 bg-red-500/5 relative group">
+<div class="absolute top-0 right-0 p-1 text-[8px] text-red-500/40">TK-9877</div>
+<div class="flex justify-between items-start mb-2">
+<span class="text-[9px] text-red-500 border border-red-500/50 px-2 py-0.5 bg-red-500/10">[STALLED]</span>
+</div>
+<h3 class="text-sm font-bold text-red-200 mb-2">REFACTOR GATEWAY AUTHENTICATION LOGIC</h3>
+<p class="text-[10px] text-red-400/60 leading-relaxed mb-4">WAIT-LOCK ENCOUNTERED ON LEGACY DEPENDENCIES. REQUIRED: ADMIN OVERRIDE FOR ACCESS TO CORE_KERNEL.</p>
+<div class="flex justify-between items-center pt-2 border-t border-red-500/10">
+<div class="flex items-center text-red-500 text-[9px] font-bold">
+<span class="material-symbols-outlined text-xs mr-1">warning</span>
+                            CRITICAL_BLOCK
+                        </div>
+<span class="text-[10px] font-bold text-red-500/40">ERR: 403_LOCK</span>
+</div>
+</div>
+</div>
+</section>
+<aside class="w-80 flex flex-col gap-3">
+<div class="tech-border bg-black p-4 flex flex-col">
+<span class="text-[10px] font-bold tracking-widest mb-4">EXECUTION_METRICS</span>
+<div class="flex justify-center mb-6 relative">
+<svg class="w-32 h-32 -rotate-90">
+<circle class="text-primary/10" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-width="4"></circle>
+<circle class="text-primary shadow-[0_0_10px_#f9f906]" cx="64" cy="64" fill="transparent" r="56" stroke="currentColor" stroke-dasharray="351.8" stroke-dashoffset="112.5" stroke-width="4"></circle>
+</svg>
+<div class="absolute inset-0 flex flex-col items-center justify-center">
+<span class="text-2xl font-bold tracking-tighter">68%</span>
+<span class="text-[8px] opacity-40">PROGRESS</span>
+</div>
+</div>
+<div class="space-y-4">
+<div class="bg-primary/5 p-3 border border-primary/10">
+<div class="flex justify-between text-[9px] mb-2">
+<span>TIME_INVESTED</span>
+<span>42.5 HRS</span>
+</div>
+<div class="flex space-x-1.5 h-3 items-end">
+<div class="flex-1 bg-primary/80 h-[100%]"></div>
+<div class="flex-1 bg-primary/60 h-[70%]"></div>
+<div class="flex-1 bg-primary h-[90%]"></div>
+<div class="flex-1 bg-primary/40 h-[40%]"></div>
+<div class="flex-1 bg-primary/80 h-[65%]"></div>
+<div class="flex-1 bg-primary h-[85%]"></div>
+</div>
+</div>
+<div class="grid grid-cols-2 gap-2 text-[9px]">
+<div class="border border-primary/10 p-2">
+<div class="opacity-40">EFFICIENCY</div>
+<div class="text-primary font-bold">0.94</div>
+</div>
+<div class="border border-primary/10 p-2">
+<div class="opacity-40">THROUGHPUT</div>
+<div class="text-primary font-bold">MAX_CAP</div>
+</div>
+</div>
+</div>
+</div>
+<div class="flex-1 tech-border bg-black p-4 flex flex-col">
+<span class="text-[10px] font-bold tracking-widest mb-4">UPCOMING_MILESTONES</span>
+<div class="flex-1 space-y-4 text-[10px]">
+<div class="border-l-2 border-primary pl-3 py-1 bg-primary/5">
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-bold text-white">MILESTONE_ALPHA</span>
+<span class="text-primary/40">T-04D</span>
+</div>
+<div class="text-[8px] opacity-50 italic">CORE_SYNC_READY</div>
+</div>
+<div class="border-l-2 border-primary/30 pl-3 py-1">
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-bold opacity-60">MILESTONE_BETA</span>
+<span class="text-primary/20">T-25D</span>
+</div>
+<div class="text-[8px] opacity-30 italic">VALIDATION_PHASE</div>
+</div>
+<div class="border-l-2 border-primary/10 pl-3 py-1">
+<div class="flex items-center justify-between mb-0.5">
+<span class="font-bold opacity-40">MAINFRAME_SYNC</span>
+<span class="text-primary/10">T-45D</span>
+</div>
+<div class="text-[8px] opacity-20 italic">FINAL_INTEGRATION</div>
+</div>
+</div>
+<div class="mt-4 opacity-20 hover:opacity-40 transition-opacity">
+<img alt="visualizer" class="w-full h-20 object-cover border border-primary/20" src="https://lh3.googleusercontent.com/aida-public/AB6AXuCLwVr6ur4557qRpnc9lPW5r4rPbMlPHhUNCOhucrIab0oK1aaXAucL9ehUIRExE_ZicIBcpfKoliMEL7mElbBIzgK6uwKGL3KvQcAvdMVM0AMeiP3Vv2KvaByRdY_jsJFVAK24Oll189X4hL_SKwqmy3F32kkztSoH0fdgTluudb6ba0bSj1eEvY5H-hMYPtPNsAnyZr3qXULsSeEh8UiVyiqMCbyDNb8xB_tVp7W3nk5XL82vzfy2OgZkzePL9IV-Je1tADyzXAQ"/>
+</div>
+</div>
+</aside>
+</main>
+<footer class="h-28 bg-black border-t border-primary/30 flex p-3 gap-3">
+<div class="w-16 flex flex-col items-center justify-center tech-border bg-primary/5 border-primary/20">
+<span class="material-symbols-outlined text-primary animate-pulse">radar</span>
+<span class="text-[8px] mt-2 font-bold tracking-tighter">LOGS</span>
+</div>
+<div class="flex-1 bg-black tech-border border-primary/10 p-2 overflow-hidden relative">
+<div class="text-[9px] font-mono space-y-1 custom-scrollbar h-full overflow-y-auto pr-2">
+<p class="text-primary/70">&gt; [SYSTEM_INIT] INITIALIZING ARKAN_PROJECT_OPERATIONS_MODULE_V4.0.1...</p>
+<p class="text-primary/50">&gt; [USER_ACTION] TASK_9902 MOVED TO [IN_PROGRESS] BY ADMIN_USER</p>
+<p class="text-primary/50">&gt; [NETWORK] HANDSHAKE_SUCCESSFUL WITH REMOTE_SERVER_B [LATENCY: 12MS]</p>
+<p class="text-red-500/70">&gt; [ERROR] AUTH_TIMEOUT ON LEGACY_NODE_04. RETRYING SEQUENCE_003...</p>
+<p class="text-primary/50">&gt; [FILE_SYS] sys_specs.md MODIFIED. CHECKSUM VALIDATED.</p>
+<p class="text-green-400/70">&gt; [TELEMETRY] ALL PROJECT NODES REPORTING NOMINAL STATE.</p>
+<p class="text-primary/40">&gt; [MONITOR] CPU_LOAD SPIKE DETECTED DURING TASK_REALLOCATION.</p>
+</div>
+</div>
+<div class="w-56 tech-border border-primary/20 p-2.5 flex flex-col justify-between bg-primary/5">
+<div class="space-y-2.5">
+<div class="space-y-1">
+<div class="flex justify-between text-[9px]">
+<span class="opacity-60">CPU_LOAD</span>
+<span class="font-bold text-primary">12%</span>
+</div>
+<div class="h-1 bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary" style="width: 12%;"></div>
+</div>
+</div>
+<div class="space-y-1">
+<div class="flex justify-between text-[9px]">
+<span class="opacity-60">RAM_UTIL</span>
+<span class="font-bold text-primary">4.2GB</span>
+</div>
+<div class="h-1 bg-primary/10 overflow-hidden">
+<div class="h-full bg-primary" style="width: 65%;"></div>
+</div>
+</div>
+</div>
+<div class="text-[8px] flex justify-between opacity-40">
+<span>REGION: EN-01</span>
+<span>PKT_LOSS: 0.00%</span>
+</div>
+</div>
+</footer>
+
+</body></html>

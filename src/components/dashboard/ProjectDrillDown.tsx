@@ -8,9 +8,10 @@ import { ArkanAudio } from "@/lib/audio/ArkanAudio";
 
 interface ProjectDrillDownProps {
     project: Project;
+    onBack?: () => void;
 }
 
-export function ProjectDrillDown({ project }: ProjectDrillDownProps) {
+export function ProjectDrillDown({ project, onBack }: ProjectDrillDownProps) {
     const { setSelectedProjectId } = useProjectStore();
 
     return (
@@ -19,7 +20,10 @@ export function ProjectDrillDown({ project }: ProjectDrillDownProps) {
             <div className="flex items-center justify-between mb-8 pb-4 border-b border-primary/10">
                 <div className="flex items-center gap-6">
                     <button
-                        onClick={() => setSelectedProjectId(null)}
+                        onClick={() => {
+                            if (onBack) onBack();
+                            else setSelectedProjectId(null);
+                        }}
                         className="flex items-center gap-2 text-[10px] font-bold tracking-widest text-primary/60 hover:text-primary transition-colors uppercase group"
                     >
                         <ArrowLeft className="h-3 w-3 group-hover:-translate-x-1 transition-transform" />
